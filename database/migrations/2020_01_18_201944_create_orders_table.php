@@ -18,10 +18,8 @@ class CreateOrdersTable extends Migration
             $table->integer('order_priority');
             $table->string('order_address');
             $table->string('order_deliverable');
-            $table->unsignedBigInteger('user_id');
+            $table->string('user_name');
             $table->timestamps();
-
-            $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade');
         });
     }
 

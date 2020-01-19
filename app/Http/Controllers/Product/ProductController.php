@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Product;
 
 use App\Http\Controllers\Controller;
+use App\Product;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -35,7 +36,24 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $body =  $request->all();
+
+        if (isset($body['products'])) {
+            $content = $body['products'];
+            foreach ($content as $item_content) {
+                $products = Product::find($item_content['id']);
+                if (!$products instanceof Product) {
+                    $product = new Product();
+                    $product->product_id = $item_content['id'];
+                    $product->product_name = $item_content['name'];
+                    $product->save();
+                }
+            }
+
+            return response()->json(['response' => 'Products insert correctly'], 200);
+        } else {
+            return response()->json(['exception' => 'Content of request incorrectly formed'], 400);
+        }
     }
 
     /**

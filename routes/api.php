@@ -8,7 +8,7 @@ Route::resource('inventory', 'Inventary\InventaryController')->only(['index', 's
 
 // Product
 
-Route::resource('product', 'Product\ProductController');
+Route::resource('product', 'Product\ProductController')->only(['store']);
 
 // Provider
 
@@ -16,7 +16,7 @@ Route::resource('provider', 'Provider\ProviderController');
 
 // Order
 
-Route::resource('order', 'Order\OrderController');
+Route::resource('order', 'Order\OrderController')->only(['index', 'show', 'store']);
 
 // User
 

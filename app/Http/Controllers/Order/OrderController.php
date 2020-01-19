@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Order;
 
 use App\Http\Controllers\Controller;
+use App\Order;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -35,7 +36,30 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+       $body = $request->all();
+
+       if (isset($body['orders'])) {
+           $content = $body['orders'];
+
+           $order = new Order();
+           foreach ($content as $item_content) {
+               $order->order_priority = $item_content['priority'];
+               $order->order_address = $item_content['address'];
+               $order->order_deliverable = $item_content['deliveryDate'];
+               $order->user_name = $item_content['user'];
+
+               if (isset($item_content['products']) && count($item_content['products']) > 0) {
+                   $products = $item_content['products'];
+                   foreach ($products as $item_products) {
+                        // Code for table pivot of product_orders
+                   }
+               }
+
+               $order->save();
+           }
+       } else {
+           dd('No existe valor');
+       }
     }
 
     /**
