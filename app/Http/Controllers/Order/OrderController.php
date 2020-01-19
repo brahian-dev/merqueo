@@ -58,7 +58,7 @@ class OrderController extends Controller
                $order->save();
            }
        } else {
-           dd('No existe valor');
+           return response()->json(['exception' => 'Content of request incorrectly formed'], 400);
        }
     }
 
