@@ -22,11 +22,19 @@ class Inventary extends Model
         $query->join('products', 'products.product_id', '=', 'inventaries.product_id');
 
         if ($date && strpos($date, '-')) {
-            $query->where('date', '=', $date);
+            $query->where('inventaries.date', '=', $date);
         } else if ($date && !strpos($date, '-')) {
             return false;
         }
-        $query->where('date', '=', '2020-03-03');
+        $query->where('inventaries.date', '=', '2019-03-01');
+
+        return $query->get();
+    }
+
+    public static function getInventoryAfter() {
+        $query = Inventary::query();
+        $query->join('products', 'products.product_id', '=', 'inventaries.product_id');
+        $query->where('inventaries.date', '=', '2019-03-02');
 
         return $query->get();
     }

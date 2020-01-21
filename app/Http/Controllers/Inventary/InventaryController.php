@@ -43,20 +43,25 @@ class InventaryController extends Controller
     public function store(Request $request)
     {
         $body = $request->all();
-        if (isset($body['inventory'])) {
-            $content = $body['inventory'];
 
-            foreach ($content as $item_content) {
-                $inventory = new Inventary();
-                $inventory->inventary_quantity = $item_content['quantity'];
-                $inventory->date = $item_content['date'];
-                $inventory->product_id = $item_content['id'];
-                $inventory->save();
+        try {
+            if (isset($body['inventory'])) {
+                $content = $body['inventory'];
+
+                foreach ($content as $item_content) {
+                    $inventory = new Inventary();
+                    $inventory->inventary_quantity = $item_content['quantity'];
+                    $inventory->date = $item_content['date'];
+                    $inventory->product_id = $item_content['id'];
+                    $inventory->save();
+                }
+
+                return response()->json(['response' => 'Inventory insert correctly'], 200);
+            } else {
+                return response()->json(['exception' => 'Content of request incorrectly formed'], 400);
             }
-
-            return response()->json(['response' => 'Inventory insert correctly'], 200);
-        } else {
-            return response()->json(['exception' => 'Content of request incorrectly formed'], 400);
+        } catch (\Exception $e) {
+            abort(404);
         }
     }
 
@@ -103,5 +108,15 @@ class InventaryController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function productInventary() {
+        $inventary = Inventary::getInventoryAfter();
+
+        if (count($inventary) > 0) {
+            return response()->json(['response' => $inventary], 200);
+        } else {
+            return response()->json(['response' => 'Sin resultado encontrados'], 200);
+        }
     }
 }
